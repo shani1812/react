@@ -1,0 +1,9 @@
+.text {
+    font-size: 2em;
+}
+
+.card {
+    width: 20em;
+    height: 13em;
+    overflow: auto;
+}

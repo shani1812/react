@@ -1,0 +1,37 @@
+.analystics-top-card {
+    width: 17vw;
+    height: 10em;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.analystics-bottom-card {
+    width: 29vw;
+    height: 20em;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+.analysitcs-card-deck {
+    margin: 3%;
+}
+
+@media only screen and (max-width: 746px) {
+    .analystics-bottom-card {
+        width: 80vw;
+     
+    }
+    .analystics-top-card {
+        width: 80vw;
+        
+    }
+    
+}
+
