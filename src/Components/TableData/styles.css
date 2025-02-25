@@ -1,0 +1,31 @@
+
+.table_content {
+    background-color: rgba(255, 255, 255, 0.548);
+   
+    height: 70vh;
+    width: 70vw;
+    
+    padding-left: 20%;
+}
+
+.table_items {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2.2rem;
+    padding: 1rem 3rem;
+    margin-bottom: 2rem;
+}
+
+@media only screen and (max-width: 600px) {
+    .items_content {
+        width: 90vw;
+    }
+}
+
+.table_header {
+    padding: 1rem 3rem;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between;
+}
