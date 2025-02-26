@@ -6,10 +6,11 @@ import { toast } from "react-toastify";
 import DeleteModal from "../../Components/modals/DeleteModal";
 
 import TableData from "../../Components/TableData/TableData";
-import { Item, ItemToAdd, Supplier, SupplierToAdd } from "../../types";
+import { Item, ItemToAdd, mail, Supplier, SupplierToAdd } from "../../types";
 import "../Admin/styles.css";
-import Analytics from "../../Components/Analytics/Analytics";
+
 import Navbar from "../../Components/NavBar";
+import { getItems } from "../../axios/test";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -37,9 +38,6 @@ const Cart = () => {
 
 
 
-
-    const [selectedTabValue, setSelectedTabValue] = useState(0);
-
     const itemTitles: Record<string, String> = {
         _id: "ID",
         name: "Name",
@@ -50,21 +48,64 @@ const Cart = () => {
         supplierPrice: "Supplier's price",
     };
 
-    const supplierTitles: Record<string, String> = {
-        _id: "ID",
-        name: "Name",
-    };
+
+      const dataa: mail[] = [
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: false },
+        { addressed: "sender1", addressee: "sender2", title: "titlefelvmcdflvmdfvmcw", text: "gvevsw", date: new Date(), isRead: true },
+        
+    ];
 
 
+    const { data: items } = useQuery("items", getItems);
     const data = [{id: "fvfvwf", name: "crcrecq"}]
     return (
         <>
 
-            <Box sx={{ width: "100%", height:"100%" }}>
-            <Navbar />
-             
-               
-                    
+            <Box sx={{width: "85vw", height: "100vh", padding: "0 4%"}} className="page-content">
+            <Typography variant="h3">Hello Shani</Typography>
+            <Typography variant="h5">You have {dataa.filter(data=> data.isRead).length} unread messages</Typography>
+            <Typography variant="h5">{items? items :""}</Typography>
+        
                           
                                 <TableData
                                     data={data}
@@ -75,6 +116,7 @@ const Cart = () => {
                                     titles={itemTitles}
                                     width={"70vw"}
                                     title={"items"}
+                                    isInbox={true}
                                 />
 
                               

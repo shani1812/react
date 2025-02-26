@@ -9,6 +9,16 @@ export interface Link {
     
 }
 
+export interface mail {
+    addressed: String
+    addressee: String
+    title: String
+    text?: String
+    date: Date | String
+    isRead: boolean
+}
+
+
 export interface Item {
     _id?: String;
     name: String;

@@ -1,9 +1,14 @@
-/* This is the navbar's width */
-
 
 body {
-    overflow: auto;
+    min-height: 100%;
 }
 
-  
 
+.page-content {
+    margin-left: 250px;
+    height: inherit;
+    display: flex;  
+   flex-direction: column;
+    margin-top: 3%;
+   
+  }

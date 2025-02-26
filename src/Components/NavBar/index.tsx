@@ -31,12 +31,12 @@ const Navbar = () => {
         <Box className={`nav ${isCollapsed ? "collapsed" : ""}`}>
             <AppBar
                 sx={{
-                    position: "absolute",
+                    position: "fixed",
                     top: 0,
                     left: 0,  
-                    height: "100%",  
+                    minHeight: "100%",
                     width: isCollapsed ? "50px" : "250px", 
-                    backgroundColor: "#f8fafd",  
+                    backgroundColor: "rgb(223, 231, 245, 0.3)",  
                     transition: "width 0.3s ease",  
                 }}
             >
@@ -75,3 +75,8 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+
+

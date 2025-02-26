@@ -1,14 +1,10 @@
 
 .nav {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+
     background-color: #f8fafd;
-    margin: 5%;
-    box-sizing: border-box;
     transition: width 0.3s ease; 
-    width: 250px;
+   
+    
 }
 
 
@@ -84,4 +80,6 @@
 .nav.collapsed .link svg {
     margin:6px;
    
-}
+} 
+
+

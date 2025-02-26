@@ -7,13 +7,18 @@ import Admin from "../Pages/Admin/Admin";
 import Cart from "../Pages/Cart/Cart";
 import theme from "../theme";
 import "./styles.css";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
+
 
 function App() {
     return (
+        <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
-               
+            <Navbar />
                 <div className="content">
                     <Routes>
                         <Route path="/" element={<Cart />} />
@@ -23,7 +28,11 @@ function App() {
             </Router>
             <ToastContainer position="bottom-left" />
         </ThemeProvider>
+        </QueryClientProvider>
     );
 }
 
 export default App;
+
+
+
