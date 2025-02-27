@@ -19,7 +19,7 @@ import {
 import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { deleteEmailFromInbox, deleteEmailFromSent, getInbox } from "../../axios/emails";
+import { deleteEmailFromInbox, deleteEmailFromSent, getInbox, readEmail } from "../../axios/emails";
 import { getCurrentUser } from "../../axios/users";
 import { Email } from "../../types";
 import DeleteModal from "../modals/DeleteModal";
@@ -159,11 +159,17 @@ const TableData = ({ setDataToDelete, isInbox, data, refetchEmails }: TableDataP
     const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
     const navigate = useNavigate(); 
+    const { mutate: readEmailMutation } = useMutation(readEmail);
 
    
-    const handleRowClick = (emailId: String) => {
+    const handleRowClick = (isRead: boolean,emailId: String) => {
+        if (!isRead) {
+            readEmailMutation(emailId);
+        }
+                 
         navigate(`/${isInbox ? "" : "sent/"}${emailId}`); 
     };
+
 
     return (
         <div>
@@ -231,7 +237,7 @@ const TableData = ({ setDataToDelete, isInbox, data, refetchEmails }: TableDataP
                                           onClick={(event) => {
                                             console.log("in row");
                                             event.stopPropagation();
-                                            return handleRowClick(item.id);
+                                            return handleRowClick(item.isRead, item.id);
                                         }}
                                         
                                       >
