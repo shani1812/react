@@ -5,14 +5,10 @@ from pydantic import BaseModel, Field
 from bson.objectid import ObjectId as BsonObjectId
 
 
-
 class User(Document):
     name: StringField = StringField(required=True)
     email_address: EmailField = EmailField(required=True, unique=True)
     password: StringField = StringField(required=True)
-
-
-
 
     meta: dict[str, str] = {'collection': 'users'}
 
@@ -39,4 +35,9 @@ class UserSchema(BaseModel):
         from_attributes = True
 
 
+class LoginUserSchema(BaseModel):
+    email_address: str
+    password: str
 
+    class Config:
+        from_attributes = True

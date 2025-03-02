@@ -1,11 +1,14 @@
-import { AppBar, Box, Toolbar, IconButton } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { AppBar, Box, Toolbar, IconButton, Button } from "@mui/material";
+import { NavLink, useLocation } from "react-router-dom";
 import { Link as LinkType } from "../../types";
 import { useState } from "react";
 import "./styles.css";
 import EmailIcon from '@mui/icons-material/Email';
 import SendIcon from '@mui/icons-material/Send';
 import MenuIcon from '@mui/icons-material/Menu';
+import CreateIcon from '@mui/icons-material/Create';
+import DeleteModal from "../modals/DeleteModal";
+import NewEmailModal from "../modals/NewEmailModal";
 
 const pages: LinkType[] = [
     {
@@ -17,15 +20,17 @@ const pages: LinkType[] = [
         label: "Sent",
         path: "sent",
         icon: <SendIcon />
-    }
+    },
 ];
 
 const Navbar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isNewEmailModal, setNewEmailModal] = useState(false);
 
     const toggleNavbar = () => {
         setIsCollapsed(!isCollapsed);
     };
+    const location = useLocation();
 
     return (
         <Box className={`nav ${isCollapsed ? "collapsed" : ""}`}>
@@ -53,10 +58,18 @@ const Navbar = () => {
                         <MenuIcon sx={{ color: "black" }} />
                     </IconButton>
 
-                    {/* Title at the top of the sidebar */}
                     {!isCollapsed && <header className="nav-title">ShaniMail</header>}
 
                     <Box className="link-box" sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: "10%" }}>
+                    <Box onClick={()=> setNewEmailModal(!isNewEmailModal)}
+                                className={(isCollapsed ? "link" : "new-email")}
+                                
+                                
+                                
+                            >
+                                <CreateIcon />
+                                {!isCollapsed && "New Email"}
+                                </Box>
                         {pages.map(({ label, path, icon }) => (
                             <NavLink
                                 key={label+""}
@@ -70,6 +83,7 @@ const Navbar = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
+             <NewEmailModal open={isNewEmailModal} handleClose={setNewEmailModal} />
         </Box>
     );
 };

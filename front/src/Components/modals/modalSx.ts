@@ -1,11 +1,11 @@
 import { SxProps } from "@mui/material";
 
-export const modalContainerStyle: SxProps = {
+export const delteModalContainerStyle: SxProps = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    bgcolor: "white",
+    bgcolor: "rgb(234, 239, 248)",
     boxShadow: 50,
     width: "25vw",
     display: "flex",
@@ -19,7 +19,7 @@ export const modalContainerStyle: SxProps = {
         width: "80vw",
     },
 };
-export const modalButtonStyle: SxProps = {
+export const deleteModalButtonStyle: SxProps = {
     backgroundColor: "white",
     fontWeight: "800",
 };

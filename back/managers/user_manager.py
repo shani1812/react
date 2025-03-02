@@ -2,7 +2,7 @@ import logging
 
 from bson import ObjectId
 
-from models.user_model import User, UserSchema
+from models.user_model import User, UserSchema, LoginUserSchema
 
 
 async def create_user(user: UserSchema):
@@ -16,5 +16,12 @@ async def get_user_by_id(user_id: ObjectId) -> User:
 
 async def get_user_by_email_address(email_address: str) -> User:
     return User.objects.get(email_address=email_address)
+
+
+async def check_email_availability(email: str):
+    return User.objects(email_address=email).first()
+
+
+
 
 

@@ -36,6 +36,23 @@
     align-items: center;  
 }
 
+.new-email {
+    color: rgb(133, 86, 64);
+    text-decoration: none;
+    padding: 5% 10%;  
+    margin-bottom: 10%;
+    transition: background-color 0.3s ease;
+    width: 70%;
+    font-size: 0.8em;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;  
+    align-self: center;
+    background-color: #d4def398; 
+    border:none
+}
+
+
 
 .link.active {
     background-color: #bdd0f5; 

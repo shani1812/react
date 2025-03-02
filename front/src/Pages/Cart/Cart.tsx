@@ -10,7 +10,7 @@ import { Item, ItemToAdd, mail, Supplier, SupplierToAdd } from "../../types";
 import "../Admin/styles.css";
 
 import Navbar from "../../Components/NavBar";
-import { getCurrentUser, getUserByEmailAddress, getUserById } from "../../axios/users";
+import { getCurrentUser, getUserById } from "../../axios/users";
 import { getInbox } from "../../axios/emails";
 
 interface TabPanelProps {
@@ -54,7 +54,7 @@ const Cart = () => {
 
 
    
-    const { data: curr } = useQuery("items", getCurrentUser);
+    const { data: curr } = useQuery("items",()=> getCurrentUser("cart"));
     const { data: emails, status: emailsStatus, refetch } = useQuery(
         "inbox",
         () => getInbox(curr?.id), // Function that fetches emails

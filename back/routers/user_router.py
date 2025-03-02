@@ -3,7 +3,7 @@ import logging
 from bson import ObjectId
 from fastapi import APIRouter, HTTPException
 from controllers import user_controller as controller
-from models.user_model import UserSchema
+from models.user_model import UserSchema, LoginUserSchema
 
 router = APIRouter()
 
@@ -23,8 +23,12 @@ async def get_user_by_email_address(email_address: str):
     return user
 
 
-@router.post("", response_model=UserSchema, status_code=201)
-async def create_user(user: UserSchema):
-    created_user = await  controller.create_user(user)
 
-    return created_user
+
+@router.get("/{email_address}/availability", status_code=200)
+async def check_email_availability(email_address: str):
+    response = await controller.check_email_availability(email_address)
+
+    return {"Available" : response}
+
+

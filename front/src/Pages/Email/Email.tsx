@@ -50,7 +50,7 @@ const Email = () => {
         supplierPrice: "Supplier's price",
     };
 
-    const { data: curr } = useQuery("items", getCurrentUser);
+    const { data: curr } = useQuery("items", ()=>getCurrentUser("email"));
     const { data: email, status: status } = useQuery("email", () => getEmailById(emailId!));
     const { mutate: readEmailMutation } = useMutation(readEmail);
 
@@ -58,17 +58,11 @@ const Email = () => {
     // Check if the URL contains 'sent'
     const isSent = location.pathname.includes("sent");
 
-    // useEffect(() => {
-    //     console.log("render");
-    //     if (status === "success" && !email.isRead && email.addressed.id === curr?.id && !isSent) {
-    //         readEmailMutation(email.id);
-    //     }
-    // }, []);
 
     return (
         <>
             <Box sx={{ width: "85vw", height: "90vh", padding: "0 4%" }} className="page-content">
-                <Box sx={{ height: "100%", padding: "0 2%" }} border={"2px inset"}>
+                <Box sx={{ minHeight: "90vh",overflow: "auto", padding: "0 2%" }} border={"2px inset"}>
                     <GoBackButton />
                     {status === "success" &&
                     ((email.addressee.id === curr?.id && isSent) || (email.addressed.id === curr?.id && !isSent)) ? (

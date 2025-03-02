@@ -151,7 +151,7 @@ const TableData = ({ setDataToDelete, isInbox, data, refetchEmails }: TableDataP
         }
     };
 
-    const { data: curr } = useQuery("items", getCurrentUser);
+    const { data: curr } = useQuery("items", ()=>getCurrentUser("tableData"));
     const { data: inbox, status: inboxStatus } = useQuery("inbox", () => getInbox(curr?.id), {
         enabled: !!curr?.id,
     });
@@ -217,8 +217,9 @@ const TableData = ({ setDataToDelete, isInbox, data, refetchEmails }: TableDataP
                 <TableContainer sx={{ minHeight: "67vh" }} component={Paper}>
                     <Table stickyHeader sx={{ minWidth: 500 }}>
                         <TableBody sx={{ minHeight: "67vh" }}>
-                            {paginatedData.length === 0
+                            {!data.length 
                                 ? `your ${isInbox ? "inbox" : "sent emails section"} is empty`
+                                : !paginatedData.length ? "no results"
                                 : paginatedData.map((item, index) => (
                                       <TableRow
                                           key={index + ""}
@@ -254,14 +255,15 @@ const TableData = ({ setDataToDelete, isInbox, data, refetchEmails }: TableDataP
                                           </TableCell>
                                           {Object.entries(item).map(([k, v], idx) => {
                                               const displayValue =
-                                                  k === "addressee" && isInbox
-                                                      ? `from: ${v.emailAddress}`
+                                                  k === "addressee" && isInbox 
+                                                      ? `from: ${v.id === curr?.id ?"you" :v.emailAddress}`
                                                       : k === "addressee" && !isInbox
                                                       ? ""
+                    
                                                       : k === "addressed" && isInbox
                                                       ? ""
                                                       : k === "addressed" && !isInbox
-                                                      ? `to: ${v.emailAddress}`
+                                                      ? `to: ${v.id === curr?.id ?"you" :v.emailAddress}`
                                                       : k === "title"
                                                       ? `topic: "${v}"`
                                                       : k === "isRead" ||
