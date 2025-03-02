@@ -2,53 +2,48 @@ import axios from "axios";
 import { LoginUser, SignupUser, User } from "../types";
 import { snakeToCamel } from "../utils";
 import { SignJWT, JWTPayload } from "jose";
-import { useLocation } from "react-router-dom";
 
-const SECRET_KEY = "your-secret-key"; // Replace with a secure key in production
+const SECRET_KEY = "secret_key";
 
 const generateJWT = async (payload: Record<string, any>): Promise<string> => {
     const secret = new TextEncoder().encode(SECRET_KEY);
-    return await new SignJWT(payload as JWTPayload) // Explicitly casting payload
+    return await new SignJWT(payload as JWTPayload)
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
         .setExpirationTime("24h")
         .sign(secret);
 };
 
-const handleAuthentication = async (user: User) => {
+const handleAuthentication = async (user: User, relayState: string) => {
     const payload: Record<string, any> = {
-        userId: user.id,
+        id: user.id,
         name: user.name,
-        emailAddress: user.emailAddress,
-        // Removed password for security reasons
+        email_address: user.emailAddress,
     };
 
     const jwtToken = await generateJWT(payload);
-    const callbackUrl = `http://localhost:8000/callback?jwt=${jwtToken}${useLocation().search}`;
-
-    // Redirect user to backend's auth callback
-    window.location.href = callbackUrl;
+    window.location.href = `http://localhost:8000/auth/callback${relayState ? relayState : "?relayState=/"}&jwt=${jwtToken}`;
 };
 
-// Axios instance with base URL
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000/users",
+    baseURL: "http://localhost:8000/auth",
 });
 
-// Create user (Sign-up)
-export const createUser = async (user: SignupUser): Promise<void> => {
-    const response = await axiosInstance.post(`/`, user);
-    await handleAuthentication(snakeToCamel(response.data) as User);
+export const createUser = async ({ user, relayState }: { user: SignupUser; relayState: string }): Promise<User> => {
+    const response = await axiosInstance.post(`/signup`, user);
+    await handleAuthentication(snakeToCamel(response.data) as User, relayState);
+    return response.data;
 };
 
-// Login user
-export const login = async (user: LoginUser): Promise<void> => {
+export const login = async ({ user, relayState }: { user: LoginUser; relayState: string }): Promise<User> => {
     const response = await axiosInstance.post(`/login`, user);
-    await handleAuthentication(snakeToCamel(response.data) as User);
+    await handleAuthentication(snakeToCamel(response.data) as User, relayState);
+    return response.data;
 };
 
-// Check email availability
-export const checkEmailAvailability = async (email: string): Promise<boolean> => {
-    const response = await axiosInstance.get(`/check-email?email=${email}`);
+export const checkEmailAvailability = async (email: string): Promise<string> => {
+    const response = await axiosInstance.get(`/${email}/availability`);
+    console.log(response.data.available);
+
     return response.data.available;
 };

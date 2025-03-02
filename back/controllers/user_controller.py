@@ -1,8 +1,4 @@
-import logging
-
 from bson import ObjectId
-from mongoengine import ValidationError
-
 from models.user_model import User, UserSchema, LoginUserSchema
 from managers import user_manager as manager
 from fastapi import HTTPException
@@ -36,3 +32,4 @@ async def check_email_availability(email: str):
         return "True"
     else:
         return "False"
+

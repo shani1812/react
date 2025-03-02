@@ -36,7 +36,8 @@
     align-items: center;  
 }
 
-.new-email {
+.nav-button {
+    cursor: pointer;
     color: rgb(133, 86, 64);
     text-decoration: none;
     padding: 5% 10%;  
@@ -50,6 +51,7 @@
     align-self: center;
     background-color: #d4def398; 
     border:none
+    
 }
 
 

@@ -1,5 +1,4 @@
-from datetime import datetime
-from typing import List, Coroutine
+from typing import List
 from bson import ObjectId
 from models.email_model import Email, EmailSchema
 

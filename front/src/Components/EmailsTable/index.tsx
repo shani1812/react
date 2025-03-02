@@ -23,18 +23,10 @@ import { deleteEmailFromInbox, deleteEmailFromSent, getInbox, readEmail } from "
 import { getCurrentUser } from "../../axios/users";
 import { Email } from "../../types";
 import DeleteModal from "../modals/DeleteModal";
-import "./styles.css";
+import { toast } from "react-toastify";
 
 interface TableDataProps {
     data: Email[];
-    setAddButton?: Function;
-    setDataToEdit?: Function;
-    setDataToDelete?: Function;
-    dataType: String;
-    titles: Record<string, String>;
-    width: String;
-    title: String;
-    handleSelectItem?: Function;
     isInbox: boolean;
     refetchEmails: Function;
 }
@@ -91,7 +83,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
     );
 }
 
-const TableData = ({ setDataToDelete, isInbox, data, refetchEmails }: TableDataProps) => {
+const TableData = ({ isInbox, data, refetchEmails }: TableDataProps) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage] = useState(15); // Fixed to 10 rows per page
     const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set()); // Track selected rows
@@ -104,7 +96,7 @@ const TableData = ({ setDataToDelete, isInbox, data, refetchEmails }: TableDataP
             refetchEmails();
         },
     });
-    const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+    const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
         setPage(newPage);
     };
 
@@ -139,19 +131,20 @@ const TableData = ({ setDataToDelete, isInbox, data, refetchEmails }: TableDataP
     };
 
     const handleDeleteSelected = () => {
-        if (setDataToDelete) {
-            const rowsToDelete = paginatedData.filter((_, index) => selectedRows.has(index));
+        
+        const rowsToDelete = paginatedData.filter((_, index) => selectedRows.has(index));
 
-            for (const email of rowsToDelete) {
-                deleteEmailMutation(email.id);
-            }
-
-            setSelectedRows(new Set());
-            setDeleteModal(false);
+        for (const email of rowsToDelete) {
+            deleteEmailMutation(email.id);
         }
+
+        setSelectedRows(new Set());
+        setDeleteModal(false);
+        toast.info(`${rowsToDelete.length} emails deleted`)
+        
     };
 
-    const { data: curr } = useQuery("items", ()=>getCurrentUser("tableData"));
+    const { data: curr } = useQuery("current-user", getCurrentUser);
     const { data: inbox, status: inboxStatus } = useQuery("inbox", () => getInbox(curr?.id), {
         enabled: !!curr?.id,
     });
@@ -163,14 +156,16 @@ const TableData = ({ setDataToDelete, isInbox, data, refetchEmails }: TableDataP
 
    
     const handleRowClick = (isRead: boolean,emailId: String) => {
-        if (!isRead) {
+        if (!isRead && isInbox) {
             readEmailMutation(emailId);
         }
                  
         navigate(`/${isInbox ? "" : "sent/"}${emailId}`); 
     };
 
-
+    console.log(
+    paginatedData[0])
+    
     return (
         <div>
             <Typography variant="h3">Hello {curr?.name}</Typography>
@@ -225,6 +220,7 @@ const TableData = ({ setDataToDelete, isInbox, data, refetchEmails }: TableDataP
                                           key={index + ""}
                                           sx={{
                                               border: 0,
+                                              cursor: "pointer",
 
                                               bgcolor: selectedRows.has(index)
                                                   ? "rgba(128, 128, 128, 0.233)"

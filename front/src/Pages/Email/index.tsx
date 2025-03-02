@@ -1,34 +1,16 @@
 import { Box, IconButton, Typography } from "@mui/material";
-import React, { useEffect } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-
-import "../Admin/styles.css";
-
 import { useParams } from "react-router-dom";
-import { getEmailById, readEmail } from "../../axios/emails";
+import { getEmailById } from "../../axios/emails";
 import { getCurrentUser } from "../../axios/users";
-
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-    const { children, value, index } = props;
-
-    return <div id={`simple-tabpanel-${index}`}>{value === index && <Box sx={{ p: 3 }}>{children}</Box>}</div>;
-}
-
 const Email = () => {
-    function GoBackButton() {
+    const GoBackButton = ()=> {
         const navigate = useNavigate();
-
         const handleGoBack = () => {
-            navigate(-1); // This will go back to the previous page in the browser history
+            navigate(-1);
         };
 
         return (
@@ -39,23 +21,9 @@ const Email = () => {
     }
 
     const { emailId } = useParams();
-
-    const itemTitles: Record<string, String> = {
-        _id: "ID",
-        name: "Name",
-        price: "Price",
-        stock: "Stock",
-        category: "Category",
-        supplier: "Supplier's Name",
-        supplierPrice: "Supplier's price",
-    };
-
-    const { data: curr } = useQuery("items", ()=>getCurrentUser("email"));
+    const { data: curr } = useQuery("current-user", getCurrentUser);
     const { data: email, status: status } = useQuery("email", () => getEmailById(emailId!));
-    const { mutate: readEmailMutation } = useMutation(readEmail);
-
-    const location = useLocation(); // Get the current URL location
-    // Check if the URL contains 'sent'
+    const location = useLocation(); 
     const isSent = location.pathname.includes("sent");
 
 

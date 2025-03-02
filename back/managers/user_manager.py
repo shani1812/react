@@ -1,8 +1,6 @@
 import logging
-
 from bson import ObjectId
-
-from models.user_model import User, UserSchema, LoginUserSchema
+from models.user_model import User, UserSchema
 
 
 async def create_user(user: UserSchema):

@@ -1,11 +1,7 @@
 from datetime import datetime
 from typing import Optional
-
-from bson import ObjectId
-from mongoengine import Document, StringField, DateTimeField, ReferenceField, BooleanField, ObjectIdField
-
+from mongoengine import Document, StringField, DateTimeField, ReferenceField, BooleanField
 from pydantic import BaseModel
-
 from models.user_model import User, UserSchema
 from bson.objectid import ObjectId as BsonObjectId
 

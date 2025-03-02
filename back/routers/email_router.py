@@ -1,8 +1,6 @@
-import logging
 from typing import List
 from bson import ObjectId
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
 from controllers import email_controller as controller
 from models.email_model import EmailSchema
 

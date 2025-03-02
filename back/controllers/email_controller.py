@@ -4,7 +4,6 @@ from models.email_model import Email, EmailSchema
 from managers import email_manager as manager
 
 
-
 async def create_email(email: EmailSchema) -> Email:
     return await manager.create_email(email)
 
