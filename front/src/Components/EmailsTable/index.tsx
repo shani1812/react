@@ -162,9 +162,6 @@ const TableData = ({ isInbox, data, refetchEmails }: TableDataProps) => {
                  
         navigate(`/${isInbox ? "" : "sent/"}${emailId}`); 
     };
-
-    console.log(
-    paginatedData[0])
     
     return (
         <div>
@@ -232,7 +229,6 @@ const TableData = ({ isInbox, data, refetchEmails }: TableDataProps) => {
                                               height: "10px",
                                           }}
                                           onClick={(event) => {
-                                            console.log("in row");
                                             event.stopPropagation();
                                             return handleRowClick(item.isRead, item.id);
                                         }}

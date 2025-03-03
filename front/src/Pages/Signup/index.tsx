@@ -57,7 +57,6 @@ const Signup = () => {
 
        
         if (emailAvailable === "False") {
-            console.log("email is taken")
             formErrors.email = "Email is already taken.";
         }
 

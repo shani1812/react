@@ -30,7 +30,6 @@ const ModalButtonStyle: SxProps = {
 const NewEmailModal = ({ open, handleClose }: NewEmailModalProps) => {
     const [to, setTo] = useState("");
     const [topic, setTopic] = useState("");
-    const [submit, setSubmit] = useState(false);
     const [message, setMessage] = useState("");
     const [errors, setErrors] = useState({
         to: "",
@@ -41,9 +40,10 @@ const NewEmailModal = ({ open, handleClose }: NewEmailModalProps) => {
     const {
         data: emailExists,
         isLoading: isEmailChecking,
-        isError
+        isError,
+        refetch: refetchEmailExist
     } = useQuery(["check-email", to], () => getUserByEmailAddress(to), {
-        enabled: submit,
+        enabled: false, // Disable the query until validation occurs
         retry: false,
     });
 
@@ -51,57 +51,57 @@ const NewEmailModal = ({ open, handleClose }: NewEmailModalProps) => {
     const { mutate: createEmailMutation } = useMutation(createEmail);
 
     const handleSubmit = async () => {
-        setSubmit(true);
+        const newErrors = { to: "", topic: "", message: "" };
+        let formIsValid = true;
+
+        if (!to) {
+            newErrors.to = "Email is required.";
+            formIsValid = false;
+        } else if (!/\S+@\S+\.\S+/.test(to)) {
+            newErrors.to = "Please enter a valid email address.";
+            formIsValid = false;
+        }
+
+        if (isEmailChecking) {
+            newErrors.to = "Checking email...";
+            formIsValid = false;
+        } else if (isError || !emailExists) {
+            newErrors.to = "Email not found.";
+            formIsValid = false;
+        }
+
+        if (!topic) {
+            newErrors.topic = "Topic is required.";
+            formIsValid = false;
+        }
+
+        if (!message) {
+            newErrors.message = "Message is required.";
+            formIsValid = false;
+        }
+
+        if (!formIsValid) {
+            setErrors(newErrors);
+        } else {
+            if (emailExists && curr) {
+                const email: NewEmail = {
+                    addressed: emailExists.id,
+                    addressee: curr.id,
+                    title: topic,
+                    text: message,
+                };
+                createEmailMutation(email);
+                handleClose();
+                toast.success("Email sent");
+            }
+        }
     };
 
     useEffect(() => {
-        if (submit) {
-            const newErrors = { to: "", topic: "", message: "" };
-            let formIsValid = true;
-
-            if (!to) {
-                newErrors.to = "Email is required.";
-                formIsValid = false;
-            } else if (!/\S+@\S+\.\S+/.test(to)) {
-                newErrors.to = "Please enter a valid email address.";
-                formIsValid = false;
-            }
-
-            if (isEmailChecking) {
-                newErrors.to = "Checking email...";
-                formIsValid = false;
-            } else if (isError || !emailExists) {
-                newErrors.to = "Email not found.";
-                formIsValid = false;
-            }
-
-            if (!topic) {
-                newErrors.topic = "Topic is required.";
-                formIsValid = false;
-            }
-
-            if (!message) {
-                newErrors.message = "Message is required.";
-                formIsValid = false;
-            }
-
-            if (!formIsValid) {
-                setErrors(newErrors);
-            } else {
-                if (emailExists && curr) {
-                    const email: NewEmail = {
-                        addressed: emailExists.id,
-                        addressee: curr.id,
-                        title: topic,
-                        text: message,
-                    };
-                    createEmailMutation(email);
-                    handleClose();
-                    toast.success("email sent");
-                }
-            }
+        if (to) {
+            refetchEmailExist();
         }
-    }, [submit, to, topic, message, isEmailChecking, isError, emailExists, curr]);
+    }, [to, emailExists]);
 
     const closeModal = () => {
         handleClose(false);
@@ -164,5 +164,6 @@ const NewEmailModal = ({ open, handleClose }: NewEmailModalProps) => {
         </Modal>
     );
 };
+
 
 export default NewEmailModal;

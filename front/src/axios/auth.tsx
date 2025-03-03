@@ -3,7 +3,10 @@ import { LoginUser, SignupUser, User } from "../types";
 import { snakeToCamel } from "../utils";
 import { SignJWT, JWTPayload } from "jose";
 
+
 const SECRET_KEY = "secret_key";
+const API_URL =  import.meta.env.REACT_APP_API_URL || "http://localhost:8000";
+
 
 const generateJWT = async (payload: Record<string, any>): Promise<string> => {
     const secret = new TextEncoder().encode(SECRET_KEY);
@@ -14,6 +17,7 @@ const generateJWT = async (payload: Record<string, any>): Promise<string> => {
         .sign(secret);
 };
 
+
 const handleAuthentication = async (user: User, relayState: string) => {
     const payload: Record<string, any> = {
         id: user.id,
@@ -22,11 +26,12 @@ const handleAuthentication = async (user: User, relayState: string) => {
     };
 
     const jwtToken = await generateJWT(payload);
-    window.location.href = `http://localhost:8000/auth/callback${relayState ? relayState : "?relayState=/"}&jwt=${jwtToken}`;
+    window.location.href = `${API_URL}/auth/callback${relayState ? relayState : "?relayState=/"}&jwt=${jwtToken}`;
 };
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000/auth",
+  
+    baseURL:  `${API_URL}/auth`,
 });
 
 export const createUser = async ({ user, relayState }: { user: SignupUser; relayState: string }): Promise<User> => {
@@ -43,7 +48,6 @@ export const login = async ({ user, relayState }: { user: LoginUser; relayState:
 
 export const checkEmailAvailability = async (email: string): Promise<string> => {
     const response = await axiosInstance.get(`/${email}/availability`);
-    console.log(response.data.available);
 
     return response.data.available;
 };

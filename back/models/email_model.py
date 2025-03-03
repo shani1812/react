@@ -25,10 +25,10 @@ class PydanticObjectId(BsonObjectId):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v, _):
-        if not isinstance(v, BsonObjectId):
+    def validate(cls, value: str, values: Optional[dict] = None, config: Optional[dict] = None, field: Optional[BaseModel] = None):
+        if not isinstance(value, BsonObjectId):
             raise TypeError('ObjectId required')
-        return str(v)
+        return str(value)
 
 class EmailSchema(BaseModel):
     id: Optional[PydanticObjectId] = None

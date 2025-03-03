@@ -1,11 +1,9 @@
-import logging
 from bson import ObjectId
 from models.user_model import User, UserSchema
 
 
 async def create_user(user: UserSchema):
     user = User(name=user.name, email_address=user.email_address, password=user.password)
-    logging.error(user)
     return user.save()
 
 async def get_user_by_id(user_id: ObjectId) -> User:

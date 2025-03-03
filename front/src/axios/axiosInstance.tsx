@@ -1,17 +1,17 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { loginRedirect } from "./loginRedirect";
 
+const API_URL =  import.meta.env.REACT_APP_API_URL || "http://localhost:8000";
+
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000/api",
+    baseURL:  `${API_URL}/api`,
     withCredentials: true,
 });
 
 axiosInstance.interceptors.response.use(
     (response) => response,
-    (error: AxiosError) => {
-        console.log(error.status);
+    (error) => {
         if (error.status === 401) {
-            console.log("in");
             loginRedirect();
         } else {
             throw error;

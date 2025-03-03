@@ -15,6 +15,5 @@ export const getUserByEmailAddress = async (emailAddress: String): Promise<User>
 
 export const getCurrentUser = async (): Promise<User> => {
     const response = await axiosInstance.get(`/users/current`);
-    console.log(response.data);
     return response.data;
 };
