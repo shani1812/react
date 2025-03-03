@@ -9,7 +9,7 @@ import controllers.user_controller as user_controller
 from mongoengine import connect, ValidationError, DoesNotExist, NotUniqueError
 
 SECRET_KEY = "secret_key"
-FRONT_URL = "http://localhost:5173"
+FRONT_URL = "http://localhost"
 app = FastAPI()
 connect('emails_db', host='mongodb://mongodb:27017/emails_db')
 
@@ -104,3 +104,15 @@ async def handle_errors(request: Request, exc: Exception):
     response.headers["Access-Control-Allow-Origin"] = FRONT_URL  # Ensure specific origin
     response.headers["Access-Control-Allow-Credentials"] = "true"  # Allow credentials
     return response
+
+
+
+
+
+
+
+
+
+
+
+
