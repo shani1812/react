@@ -7,8 +7,7 @@ from controllers import user_controller
 from models.user_model import UserSchema, LoginUserSchema
 
 router = APIRouter()
-FRONT_URL = "http://localhost:5173"
-
+FRONT_URL = "https://localhost"
 @router.post("/signup", response_model=UserSchema, status_code=201)
 async def create_user(user: UserSchema):
     return await user_controller.create_user(user)

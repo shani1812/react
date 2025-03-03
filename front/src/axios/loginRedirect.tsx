@@ -1,3 +1,3 @@
 export const loginRedirect = async () => {
-    window.location.href = `http://localhost:5173/login?relayState=${window.location.pathname}`;
+    window.location.href = `https://localhost/login?relayState=${window.location.pathname}`;
 };

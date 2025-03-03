@@ -3,11 +3,11 @@ services:
     build:
       context: ./front
     ports:
-      - "5173:5173"
+      - "5173:5173"  # Expose React dev server port (you can access directly)
     depends_on:
       - backend
     environment:
-      - REACT_APP_API_URL=http://backend:8000
+      - URL=https://localhost  # Backend API URL for React
     networks:
       - app-network
 
@@ -15,10 +15,12 @@ services:
     build:
       context: ./back
     ports:
-      - "8000:8000"
+      - "8000:8000"  # Expose backend API
     environment:
+      - DB_NAME=emails_db
       - MONGO_URI=mongodb://mongodb:27017/emails_db
       - SECRET_KEY=secret_key
+      - FRONT_URL=http://localhost
     depends_on:
       - mongodb
     networks:
@@ -30,20 +32,25 @@ services:
     volumes:
       - mongodb_data:/data/db
     ports:
-      - "27018:27017"
+      - "27018:27017"  # Expose MongoDB port
     networks:
       - app-network
 
   nginx:
     image: nginx:latest
-    ports: 
-    - 80:80
-    container_name: "nginx"
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"  # Expose HTTPS
     volumes:
-      - ./nginx:/etc/nginx/conf.d
+      - ./nginx:/etc/nginx/conf.d  # Mount Nginx config
+      - ./nginx/ssl:/etc/nginx/ssl  # Mount SSL certificates
     depends_on:
       - frontend
       - backend
+    networks:
+      - app-network
+
 
 volumes:
   mongodb_data:

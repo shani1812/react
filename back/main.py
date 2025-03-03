@@ -1,3 +1,5 @@
+import logging
+import os
 import jwt
 from fastapi import FastAPI, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,10 +9,13 @@ from routers.user_router import router as user_router
 from routers.email_router import router as email_router
 from mongoengine import connect, ValidationError, DoesNotExist, NotUniqueError
 
-SECRET_KEY = "secret_key"
-FRONT_URL = "http://localhost"
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/emails_db")
+DB_NAME = os.getenv("DB_NAME", "emails_db")
+SECRET_KEY = os.getenv("SECRET_KEY", "secret_key")
+FRONT_URL = os.getenv("FRONT_URL", "https://localhost")
+
 app = FastAPI()
-connect('emails_db', host='mongodb://mongodb:27017/emails_db')
+connect(DB_NAME, host=MONGO_URI)
 
 
 def parse_jwt(token: str):

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { loginRedirect } from "./loginRedirect";
 
-const API_URL =  import.meta.env.REACT_APP_API_URL || "http://localhost:8000";
+const API_URL =  import.meta.env.URL || "https://localhost";
 
 export const axiosInstance = axios.create({
     baseURL:  `${API_URL}/api`,

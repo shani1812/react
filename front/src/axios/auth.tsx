@@ -5,7 +5,7 @@ import { SignJWT, JWTPayload } from "jose";
 
 
 const SECRET_KEY = "secret_key";
-const API_URL =  import.meta.env.REACT_APP_API_URL || "http://localhost:8000";
+const API_URL =  import.meta.env.URL || "https://localhost";
 
 
 const generateJWT = async (payload: Record<string, any>): Promise<string> => {
