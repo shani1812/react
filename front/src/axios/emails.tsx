@@ -8,14 +8,14 @@ export const getEmailById = async (emailId: String): Promise<Email> => {
     return snakeToCamel(response.data) as Email;
 };
 
-export const getSentEmails = async (addresseeId: String): Promise<Email[]> => {
-    const response = await axiosInstance.get(`/emails/${addresseeId}/sent`);
+export const getSentEmails = async (): Promise<Email[]> => {
+    const response = await axiosInstance.get(`/emails/sent`);
 
     return snakeToCamel(response.data) as Email[];
 };
 
-export const getInbox = async (addressedId: String | undefined): Promise<Email[]> => {
-    const response = await axiosInstance.get(`/emails/${addressedId}/inbox`);
+export const getInbox = async (): Promise<Email[]> => {
+    const response = await axiosInstance.get(`/emails/inbox`);
 
     return snakeToCamel(response.data) as Email[];
 };

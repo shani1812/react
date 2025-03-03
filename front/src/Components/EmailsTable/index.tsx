@@ -29,6 +29,7 @@ interface TableDataProps {
     data: Email[];
     isInbox: boolean;
     refetchEmails: Function;
+    manipulateData: Function
 }
 
 interface TablePaginationActionsProps {
@@ -83,7 +84,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
     );
 }
 
-const TableData = ({ isInbox, data, refetchEmails }: TableDataProps) => {
+const TableData = ({ isInbox, data, refetchEmails, manipulateData }: TableDataProps) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage] = useState(15); // Fixed to 10 rows per page
     const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set()); // Track selected rows
@@ -104,10 +105,10 @@ const TableData = ({ isInbox, data, refetchEmails }: TableDataProps) => {
         setSearchTerm(event.target.value);
     };
 
-    data = data.map((data) => {
-        data.date = new Date(data.date).toLocaleString();
-        return data;
-    });
+    // data = data.map((data) => {
+    //     data.date = new Date(data.date).toLocaleString();
+    //     return data;
+    // });
 
     const filteredData = data.filter((item) =>
         Object.entries(item).some(([key, value]) => {
@@ -145,9 +146,7 @@ const TableData = ({ isInbox, data, refetchEmails }: TableDataProps) => {
     };
 
     const { data: curr } = useQuery("current-user", getCurrentUser);
-    const { data: inbox, status: inboxStatus } = useQuery("inbox", () => getInbox(curr?.id), {
-        enabled: !!curr?.id,
-    });
+    const { data: inbox, status: inboxStatus } = useQuery("inbox", getInbox)
 
     const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
@@ -245,30 +244,8 @@ const TableData = ({ isInbox, data, refetchEmails }: TableDataProps) => {
                                                   }}
                                               />
                                           </TableCell>
-                                          {Object.entries(item).map(([k, v], idx) => {
-                                              const displayValue =
-                                                  k === "addressee" && isInbox 
-                                                      ? `from: ${v.id === curr?.id ?"you" :v.emailAddress}`
-                                                      : k === "addressee" && !isInbox
-                                                      ? ""
-                    
-                                                      : k === "addressed" && isInbox
-                                                      ? ""
-                                                      : k === "addressed" && !isInbox
-                                                      ? `to: ${v.id === curr?.id ?"you" :v.emailAddress}`
-                                                      : k === "title"
-                                                      ? `topic: "${v}"`
-                                                      : k === "isRead" ||
-                                                        k === "id" ||
-                                                        k === "text" ||
-                                                        k === "addressedVisible" ||
-                                                        k === "addresseeVisible"
-                                                      ? ""
-                                                      : String(v);
-
-                                              if (displayValue !== "") {
-                                                  return (
-                                                      <TableCell
+                                          {Object.values(manipulateData(item)).map((v,idx) => {
+                                                return <TableCell
                                                           key={idx}
                                                           component="th"
                                                           scope="row"
@@ -277,12 +254,13 @@ const TableData = ({ isInbox, data, refetchEmails }: TableDataProps) => {
                                                               padding: "4px 8px",
                                                           }}
                                                       >
-                                                          {displayValue}
+                                                          {String(v)}
                                                       </TableCell>
-                                                  );
-                                              }
-                                              return null;
-                                          })}
+                                          })
+                                        }
+
+                                             
+                                          
                                           
                                       </TableRow>
                                   ))}

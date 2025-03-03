@@ -42,3 +42,15 @@ export interface NewEmail {
     title: String;
     text: String;
 }
+
+export interface inboxEmail {
+    addressee: string;
+    title: String;
+    date: string;
+}
+
+export interface sentEmail {
+    addressed: string;
+    title: String;
+    date: string;
+}
