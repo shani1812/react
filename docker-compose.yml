@@ -52,6 +52,15 @@ services:
       - app-network
 
 
+
+
+
+
+
+
+      
+
+
 volumes:
   mongodb_data:
 
