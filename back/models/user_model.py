@@ -1,6 +1,6 @@
 from typing import Optional
 from mongoengine import Document, StringField, EmailField
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 from bson.objectid import ObjectId as BsonObjectId
 
 
